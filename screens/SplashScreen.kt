@@ -1,3 +1,8 @@
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.media3.ui.PlayerView
+import androidx.media3.common.MediaItem
+
 @Composable
 fun Mp4SplashScreen(navController: NavController) {
 

@@ -1,3 +1,5 @@
+//for default icons
+
 @Composable
 fun CategoryItem(
     icon: ImageVector,

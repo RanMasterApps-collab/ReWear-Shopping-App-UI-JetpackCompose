@@ -1,0 +1,9 @@
+data class CartItem(
+    val name: String,
+    val price: Double,
+    val initialQuantity: Int,
+    val image: Int
+) {
+    var quantity by mutableIntStateOf(initialQuantity)
+
+}

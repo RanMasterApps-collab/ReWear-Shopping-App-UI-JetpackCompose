@@ -1,5 +1,5 @@
-package com.ranmasterapp.canva_preview
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,6 +27,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,9 +40,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -50,8 +55,22 @@ fun CheckoutScreen() {
     var selectedMethod by remember {
         mutableStateOf("Visa")
     }
+    var name by remember {
+        mutableStateOf("Olivia Marie")
+    }
+
+    var city by remember {
+        mutableStateOf("Karachi, Pakistan")
+    }
+    var tempName by remember { mutableStateOf(name) }
+    var tempCity by remember { mutableStateOf(city) }
+
+
+    var showEdit by remember {
+        mutableStateOf(false)
+    }
     var cardHolder by remember {
-        mutableStateOf("OLIVIA PARKER")
+        mutableStateOf("OLIVIA MARIE")
     }
 
     var cardNumber by remember {
@@ -71,6 +90,7 @@ fun CheckoutScreen() {
     val darkBlue = Color(0xFF0F2E5B)
     val cardBlue = Color(0xFF1A3B6B)
     val yellow = Color(0xFFFFC107)
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -156,12 +176,12 @@ fun CheckoutScreen() {
                         Spacer(modifier = Modifier.height(4.dp))
 
                         Text(
-                            text = "Olivia Parker",
+                            text = name,
                             color = Color.LightGray
                         )
 
                         Text(
-                            text = "Karachi, Pakistan",
+                            text = city,
                             color = Color.LightGray
                         )
                     }
@@ -170,11 +190,70 @@ fun CheckoutScreen() {
                 Text(
                     text = "Edit",
                     color = yellow,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.clickable {
+
+                        tempName = name
+                        tempCity = city
+
+                        showEdit = true
+                    }
                 )
             }
         }
+        if (showEdit) {
 
+            Spacer(modifier = Modifier.height(10.dp))
+
+            OutlinedTextField(
+                value = tempName,
+                onValueChange = { tempName = it },
+                label = { Text("Name") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = tempCity,
+                onValueChange = { tempCity = it },
+                label = { Text("Address") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+
+                Button(
+                    onClick = {
+                        name = tempName
+                        city = tempCity
+                        showEdit = false
+                    },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = yellow
+                    )
+                ) {
+                    Text("Save", color = Color.Black)
+                }
+
+                Button(
+                    onClick = {
+                        showEdit = false
+                    },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Gray
+                    )
+                ) {
+                    Text("Cancel")
+                }
+            }
+        }
         Spacer(modifier = Modifier.height(10.dp))
 
 
@@ -312,22 +391,36 @@ fun CheckoutScreen() {
 
                 BasicTextField(
                     value = cardNumber,
-                    onValueChange = { cardNumber = it },
+                    onValueChange = {
+
+                        val digits = it.filter { char ->
+                            char.isDigit()
+                        }.take(16)
+
+                        cardNumber = digits.chunked(4).joinToString(" ")
+                    },
                     textStyle = TextStyle(
                         color = Color.White,
                         fontSize = 22.sp,
                         letterSpacing = 2.sp
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
                     )
                 )
-
                 Spacer(modifier = Modifier.height(6.dp))
 
                 BasicTextField(
                     value = cardHolder,
-                    onValueChange = { cardHolder = it },
+                    onValueChange = {
+                        cardHolder = it.uppercase()
+                    },
                     textStyle = TextStyle(
                         color = Color.White,
                         fontSize = 16.sp
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Characters
                     )
                 )
 
@@ -348,7 +441,18 @@ fun CheckoutScreen() {
 
                         BasicTextField(
                             value = validDate,
-                            onValueChange = { validDate = it },
+                            onValueChange = {
+
+                                val digits = it.filter { ch ->
+                                    ch.isDigit()
+                                }.take(4)
+
+                                validDate = when {
+                                    digits.length <= 2 -> digits
+                                    else -> digits.substring(0, 2) + "/" +
+                                            digits.substring(2)
+                                }
+                            },
                             textStyle = TextStyle(
                                 color = Color.White
                             )
@@ -365,9 +469,14 @@ fun CheckoutScreen() {
 
                         BasicTextField(
                             value = cvv,
-                            onValueChange = { cvv = it },
+                            onValueChange = {
+                                cvv = it.take(3)
+                            },
                             textStyle = TextStyle(
                                 color = Color.White
+                            ),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number
                             )
                         )
                     }
@@ -445,7 +554,13 @@ fun CheckoutScreen() {
           Spacer(modifier = Modifier.height(20.dp))
 
                   Button(
-                      onClick = {},
+                      onClick = {
+                          Toast.makeText(
+                              context,
+                              "Order Placed Successfully 🎉",
+                              Toast.LENGTH_SHORT
+                          ).show()
+                      },
                       modifier = Modifier
                           .fillMaxWidth()
                           .height(58.dp),

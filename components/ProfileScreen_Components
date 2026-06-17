@@ -1,0 +1,72 @@
+@Composable
+fun StatItem(
+    value: String,
+    title: String
+) {
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Text(
+            text = value,
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp
+        )
+
+        Text(
+            text = title,
+            color = Color.LightGray
+        )
+    }
+}
+
+@Composable
+fun ProfileMenuItem(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String
+) {
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 6.dp),
+
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF1A3B6B)
+        ),
+
+        shape = RoundedCornerShape(16.dp)
+    ) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(18.dp),
+
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = Color(0xFFFFC107)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Text(
+                text = title,
+                color = Color.White,
+                modifier = Modifier.weight(1f)
+            )
+
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = null,
+                tint = Color.White
+            )
+        }
+    }
+}

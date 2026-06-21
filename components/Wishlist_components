@@ -1,0 +1,108 @@
+@Composable
+fun WishlistCard(
+    item: WishlistItem
+) {
+
+    Card(
+        shape = RoundedCornerShape(24.dp),
+
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF1B2B41)
+        ),
+
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+
+        Column {
+
+            Box {
+
+                Image(
+                    painter = painterResource(item.image),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(170.dp),
+                    contentScale = ContentScale.Crop
+                )
+
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(10.dp),
+
+                    shape = CircleShape,
+
+                    color = Color.White.copy(
+                        alpha = 0.9f
+                    )
+                ) {
+
+                    IconButton(
+                        onClick = { }
+                    ) {
+
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = null,
+                            tint = Color.Red
+                        )
+                    }
+                }
+            }
+
+            Column(
+                modifier = Modifier.padding(12.dp)
+            ) {
+
+                Text(
+                    text = item.name,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
+                )
+
+                Spacer(
+                    modifier = Modifier.height(6.dp)
+                )
+
+                Text(
+                    text = "$${item.price}",
+                    color = Color(0xFFFFB800),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+
+                Spacer(
+                    modifier = Modifier.height(10.dp)
+                )
+
+                Button(
+                    onClick = { },
+
+                    modifier = Modifier.fillMaxWidth(),
+
+                    shape = RoundedCornerShape(16.dp),
+
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFFB800)
+                    )
+                ) {
+
+                    Text(
+                        text = "Add To Cart",
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
+}
+data class WishlistItem(
+    val name: String,
+    val price: Double,
+    val image: Int
+)

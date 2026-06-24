@@ -3,7 +3,8 @@
 fun BottomIcon(
     icon: ImageVector,
     selected: Boolean,
-    goldColor: Color
+    goldColor: Color,
+    onClick: () -> Unit
 ) {
 
     Box(
@@ -11,18 +12,22 @@ fun BottomIcon(
             .size(50.dp)
             .clip(CircleShape)
             .background(
-                if (selected)
-                    goldColor
-                else
-                    Color.Transparent
-            ),
+                if (selected) goldColor
+                else Color.Transparent
+            )
+            .clickable {
+                onClick()
+            },
         contentAlignment = Alignment.Center
     ) {
 
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = if (selected) Color.Black else Color.White
+            tint = if (selected)
+                Color.Black
+            else
+                Color.White
         )
     }
 }

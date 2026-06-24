@@ -47,9 +47,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun ProductDetailScreenUI() {
+fun ProductDetailScreenUI(image: Int,
+title: String,
+price: String,
+description:String,
+onAddToCart:() -> Unit) {
     val bgGradient = Brush.verticalGradient(
         colors = listOf(
             Color(0xFF0A1931),
@@ -75,9 +80,9 @@ fun ProductDetailScreenUI() {
 
                 TopBar()
 
-                ProductImageSection()
+                ProductImageSection(image)
 
-                ProductInfoSection()
+                ProductInfoSection(title,description)
 
                 Column(
                     modifier = Modifier
@@ -97,8 +102,9 @@ fun ProductDetailScreenUI() {
               modifier = Modifier
                   .align(Alignment.BottomCenter)
           ) {
-              BottomPriceBar()
+              BottomPriceBar(price,onAddToCart)
       }
           }
 
     }
+

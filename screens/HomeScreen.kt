@@ -1,3 +1,4 @@
+
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,10 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -51,11 +55,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
-fun RewearHomeScreen() {
+fun RewearHomeScreen(navController:NavController) {
     val goldColor = Color(0xFFF6B73C)
-
     val bgGradient = Brush.verticalGradient(
         colors = listOf(
             Color(0xFF0A1931),
@@ -65,8 +70,10 @@ fun RewearHomeScreen() {
 
 
     val context= LocalContext.current
-
-
+    val selected = true
+    val currentRoute =
+        navController.currentBackStackEntryAsState()
+            .value?.destination?.route
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -76,8 +83,9 @@ fun RewearHomeScreen() {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(bottom = 120.dp)
                 .padding(horizontal = 20.dp),
-            contentPadding = PaddingValues(bottom = 100.dp)
+          //  contentPadding = PaddingValues(bottom = 100.dp)
         ) {
 
             item {
@@ -86,6 +94,7 @@ fun RewearHomeScreen() {
 
 
                 // TOP BAR
+
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -201,7 +210,7 @@ fun RewearHomeScreen() {
                     }
                 }
 
-                Spacer(modifier = Modifier.height(28.dp))
+               Spacer(modifier = Modifier.height(28.dp))
 
 
                       // BANNER CARD
@@ -287,37 +296,35 @@ fun RewearHomeScreen() {
                        Spacer(modifier = Modifier.height(30.dp))
 
 
+                                                // CATEGORY TITLE
 
-                                // CATEGORY TITLE
+                                               Row(
+                                                   modifier = Modifier.fillMaxWidth(),
+                                                   horizontalArrangement = Arrangement.SpaceBetween
+                                               ) {
 
-                               Row(
-                                   modifier = Modifier.fillMaxWidth(),
-                                   horizontalArrangement = Arrangement.SpaceBetween
-                               ) {
+                                                   Text(
+                                                       text = "Categories",
+                                                       color = Color.White,
+                                                       fontSize = 22.sp,
+                                                       fontWeight = FontWeight.Bold
+                                                   )
 
-                                   Text(
-                                       text = "Categories",
-                                       color = Color.White,
-                                       fontSize = 22.sp,
-                                       fontWeight = FontWeight.Bold
-                                   )
+                                                   Text(
+                                                       text = "See All",
+                                                       color = goldColor
+                                                   )
+                                               }
 
-                                   Text(
-                                       text = "See All",
-                                       color = goldColor
-                                   )
-                               }
+                                               Spacer(modifier = Modifier.height(20.dp))
 
-                               Spacer(modifier = Modifier.height(20.dp))
+                                               // CATEGORY ROW
 
-                               // CATEGORY ROW
-
-                               Row(
-                                   modifier = Modifier.fillMaxWidth(),
-                                   horizontalArrangement = Arrangement.SpaceBetween
-                               ) {
-
-                /*                   CategoryItemImage(
+                                               Row(
+                                                   modifier = Modifier.fillMaxWidth(),
+                                                   horizontalArrangement = Arrangement.SpaceBetween
+                                               ) {
+                                                   /*                   CategoryItemImage(
                                        title = "T-Shirt",
                                    )
 */
@@ -347,6 +354,8 @@ fun RewearHomeScreen() {
                               }
                       Spacer(modifier = Modifier.height(30.dp))
 
+
+
                                                // PRODUCT TITLE
 
                                                Text(
@@ -359,25 +368,90 @@ fun RewearHomeScreen() {
 
                                                // PRODUCTS
 
-                                               Row {
+                                             /*  Row (
+                                                   modifier = Modifier.horizontalScroll(rememberScrollState())
+
+                                               ){
 
                                                    ProductCard(
                                                        image = R.drawable.card1,
                                                        title = "Brown Jacket",
                                                        price = "$89",
                                                        goldColor = goldColor
-                                                   )
+                                                  , onClick = {
+                                                           navController.navigate("product")
+                                                       } )
 
                                                    Spacer(modifier = Modifier.width(16.dp))
-
                                                    ProductCard(
                                                        image = R.drawable.card3,
                                                        title = "Stylish Coat",
                                                        price = "$120",
                                                        goldColor = goldColor
-                                                   )
+                                                   , onClick = {
+                                                           navController.navigate("product")
+                                                       })
+                                               Spacer(modifier = Modifier.width(16.dp))
+
+                                                   ProductCard(
+                                                       image = R.drawable.card4,
+                                                       title = "White Sneakers",
+                                                       price = "$150",
+                                                       goldColor = goldColor
+                                                   , onClick = {
+                                                           navController.navigate("product")
+                                                       })
+                                               Spacer(modifier = Modifier.width(16.dp))
+
+                                                   ProductCard(
+                                                       image = R.drawable.bag,
+                                                       title = "Leather Bag",
+                                                       price = "$99",
+                                                       goldColor = goldColor
+                                                   , onClick = {
+                                                           navController.navigate("product")
+                                                       })
+                                              Spacer(modifier = Modifier.width(16.dp))
+
+                                                   ProductCard(
+                                                       image = R.drawable.hoodie,
+                                                       title = "Black Hoodie",
+                                                       price = "$79",
+                                                       goldColor = goldColor
+                                                   , onClick = {
+                                                           navController.navigate("product")
+                                                       })
+                                              Spacer(modifier = Modifier.width(16.dp))
+
+                                                   ProductCard(
+                                                       image = R.drawable.shoe,
+                                                       title = "Classic Shoes",
+                                                       price = "$135",
+                                                       goldColor = goldColor
+                                                   , onClick = {
+                                                           navController.navigate("product")
+                                                       })
                                                }
-            }
+            */
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState())
+                ) {
+
+                    products.forEach { product ->
+
+                        ProductCard(
+                            image = product.image,
+                            title = product.title,
+                            price = product.price,
+                            goldColor = goldColor,
+                            onClick = {
+                                navController.navigate("product/${product.id}")
+                            }
+                        )
+
+                        Spacer(modifier = Modifier.width(16.dp))
+                    }
+                }}
         }
 
 
@@ -391,7 +465,7 @@ fun RewearHomeScreen() {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(20.dp)
-                .padding(bottom = 30.dp)
+                .padding(bottom = 20.dp)
                 .fillMaxWidth()
                 .height(75.dp)
                 .clip(RoundedCornerShape(40.dp))
@@ -404,12 +478,11 @@ fun RewearHomeScreen() {
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 /*BottomIconImage(
                     selected = true,
                   //  goldColor = goldColor
                 )*/
-         BottomIcon(
+      /*   BottomIcon(
                     icon = Icons.Default.Home,
                     selected = true,
                     goldColor = goldColor
@@ -431,7 +504,41 @@ fun RewearHomeScreen() {
                     icon = Icons.Default.Person,
                     selected = false,
                     goldColor = goldColor
+                )*/
+                BottomIcon(
+                    icon = Icons.Default.Home,
+                    selected = true,
+                    goldColor = goldColor,
+                    onClick = {
+                        navController.navigate("home")
+                    }
                 )
-            }
-        }    }
+
+                BottomIcon(
+                    icon = Icons.Default.FavoriteBorder,
+                    selected = false,
+                    goldColor = goldColor,
+                    onClick = {
+                        navController.navigate("wishlist")
+                    }
+                )
+
+                BottomIcon(
+                    icon = Icons.Default.ShoppingCart,
+                    selected = false,
+                    goldColor = goldColor,
+                    onClick = {
+                        navController.navigate("cart")
+                    }
+                )
+
+                BottomIcon(
+                    icon = Icons.Default.Person,
+                    selected = false,
+                    goldColor = goldColor,
+                    onClick = {
+                        navController.navigate("profile")
+                    }
+                )}
+       }   }
 }

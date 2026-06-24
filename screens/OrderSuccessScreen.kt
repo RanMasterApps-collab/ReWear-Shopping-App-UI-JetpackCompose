@@ -1,15 +1,20 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -31,8 +36,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun OrderSuccessScreen() {
-
+fun OrderSuccessScreen(onContinueShopping:() -> Unit) {
+    val images = listOf(
+        R.drawable.card1,
+        R.drawable.card2,
+        R.drawable.card4,
+        R.drawable.bag
+    )
+    val columns = when {
+        images.size <= 1 -> 1
+        images.size <= 4 -> 2
+        else -> 3
+    }
     val darkBlue = Color(0xFF0F2E5B)
     val yellow = Color(0xFFFFC107)
     Column(
@@ -73,6 +88,29 @@ fun OrderSuccessScreen() {
         verticalArrangement = Arrangement.Center
     ) {
 
+
+      /*  Box(
+            modifier = Modifier
+                .size(270.dp)
+                .clip(RoundedCornerShape(25.dp))
+        ) {
+      */      LazyVerticalGrid(
+                columns = GridCells.Fixed(columns),
+                modifier = Modifier.size(270.dp),
+                userScrollEnabled = false
+            ) {
+                items(images) { image ->
+                    Image(
+                        painter = painterResource(image),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+        }
+/*
         Image(
             painter = painterResource(R.drawable.card1),//success_illustration
             contentDescription = null,
@@ -81,6 +119,7 @@ fun OrderSuccessScreen() {
             contentScale = ContentScale.Crop
         )
 
+*/
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
@@ -127,7 +166,7 @@ fun OrderSuccessScreen() {
         Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedButton(
-            onClick = {},
+            onClick = {onContinueShopping()},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)

@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CartScreen() {
+fun CartScreen(onCheckoutClick:(Double) -> Unit) {
     val context = LocalContext.current
     val bgGradient = Brush.verticalGradient(
         colors = listOf(
@@ -61,7 +61,8 @@ fun CartScreen() {
         mutableStateListOf(
             CartItem("Brown Jacket", 89.0, 1, R.drawable.card1),
             CartItem("Stylish Coat", 120.0, 2, R.drawable.card2),
-            CartItem("Sneakers", 150.0, 1, R.drawable.card4)
+            CartItem("Sneakers", 150.0, 1, R.drawable.card4),
+            CartItem("Leather Bag", 99.0, 1, R.drawable.bag)
         )
     }
 
@@ -73,11 +74,13 @@ fun CartScreen() {
         containerColor = Color.Transparent,
         bottomBar = {
             CartBottomSection(totalPrice, onCheckout = {
-                Toast.makeText(
+                onCheckoutClick(totalPrice)
+
+                /*Toast.makeText(
                     context,
                     "Proceeding to Checkout...",
                     Toast.LENGTH_SHORT
-                ).show()
+                ).show()*/
             })
 
         }
@@ -126,4 +129,3 @@ fun CartScreen() {
         }
     }
 }
-

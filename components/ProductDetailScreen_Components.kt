@@ -1,4 +1,5 @@
 
+
 @Composable
 fun TopBar() {
     Row(
@@ -16,7 +17,7 @@ fun TopBar() {
 }
 
 @Composable
-fun ProductImageSection() {
+fun ProductImageSection(image: Int) {
     Card(
         shape = RoundedCornerShape(30.dp),
         modifier = Modifier
@@ -24,7 +25,7 @@ fun ProductImageSection() {
             .height(310.dp)
     ) {
         Image(
-            painter = painterResource(R.drawable.card1),
+            painter = painterResource(image),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
@@ -34,7 +35,7 @@ fun ProductImageSection() {
 
 
 @Composable
-fun ProductInfoSection() {
+fun ProductInfoSection(title: String,description: String) {
 
     Text(
         text = "Female's Style",
@@ -49,7 +50,7 @@ fun ProductInfoSection() {
     ) {
 
         Text(
-            text = "Brown Jacket",
+            text = title,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold, color = Color.White
         )
@@ -69,9 +70,7 @@ fun ProductInfoSection() {
     Text(
         fontSize = 14.sp,
         color = Color.White,
-        text = "Premium quality light brown jacket designed\n" +
-                "for comfort and everyday wear."
-    )
+        text = description )
     Text(
         fontSize = 14.sp,
         color = Color(0xFFF6B73C),
@@ -199,7 +198,7 @@ fun ColorSelector() {
 }
 
 @Composable
-fun BottomPriceBar() {
+fun BottomPriceBar(price: String,onAddToCart: () -> Unit) {
     val goldColor = Color(0xFFF6B73C)
     BottomAppBar(
         containerColor = Color(0xFF102A43),
@@ -223,14 +222,15 @@ fun BottomPriceBar() {
                 )
 
                 Text(
-                    "$83.97",
+                    price,
                     fontWeight = FontWeight.Bold, color = Color.White
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))
 
             Button(
-                onClick = {},
+                onClick = {onAddToCart()
+                },
                 modifier = Modifier
                     .width(220.dp)
                     .height(50.dp)

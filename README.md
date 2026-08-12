@@ -9,7 +9,7 @@ This project is part of a complete **Jetpack Compose Shopping App UI Tutorial Se
 ## 📱 App Preview
 
 <p align="center">
-  <img src="./images/rewear_app.png" width="350"/>
+  <img src="./images/rewear-shopping-app.png" width="350"/>
 </p>
 
 ---
